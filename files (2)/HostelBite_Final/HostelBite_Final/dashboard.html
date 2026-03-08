@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — HostelBite</title>
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/charts.css" />
+  <style>
+    .welcome-hero { border-radius:22px; padding:30px 36px; color:#fff; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+    .welcome-hero .avatar-big { width:78px; height:78px; border-radius:50%; background:rgba(255,255,255,0.22); border:3px solid rgba(255,255,255,0.4); display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:900; color:#fff; }
+    .welcome-hero .greeting { opacity:.8; font-size:15px; margin-bottom:4px; }
+    .welcome-hero h1 { color:#fff; font-size:clamp(24px,4vw,36px); }
+    .welcome-hero .meta-pills { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+    .meta-pill { background:rgba(255,255,255,0.2); border-radius:20px; padding:4px 14px; font-size:13px; color:#fff; }
+    .quick-actions { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:24px; }
+    .qa-btn { border:none; border-radius:14px; padding:18px 10px; font-weight:600; font-size:14px; cursor:pointer; font-family:var(--font-body); display:flex; flex-direction:column; align-items:center; gap:6px; color:#fff; transition:transform .15s; box-shadow:0 4px 14px rgba(0,0,0,0.12); }
+    .qa-btn:hover { transform:translateY(-3px); }
+    .qa-btn .qa-icon { font-size:26px; }
+    .menu-snap-row { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border); }
+    .menu-snap-row:last-of-type { border-bottom:none; }
+    .meal-info { display:flex; gap:10px; align-items:center; }
+    .meal-info .m-emoji { font-size:22px; }
+    .bar-label { font-size:12px; color:var(--muted); width:72px; text-align:right; flex-shrink:0; }
+    .bar-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+    .bar-track { flex:1; height:14px; background:var(--border); border-radius:7px; overflow:hidden; }
+    .bar-fill-ns { height:100%; border-radius:7px; transition:width .7s ease; }
+    .bar-score { font-size:12px; font-weight:700; width:32px; }
+    .review-item { background:#FAFAFA; border-radius:12px; padding:14px 16px; border:1px solid var(--border); margin-bottom:10px; }
+    .review-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
+    .review-meal  { display:flex; gap:8px; align-items:center; font-weight:700; font-size:14px; }
+    .review-score { background:var(--saffron-lt); color:var(--saffron); font-size:12px; font-weight:700; padding:2px 9px; border-radius:10px; }
+    .empty-state { text-align:center; padding:40px 20px; }
+    .empty-state .es-icon { font-size:56px; margin-bottom:12px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar"></nav>
+  <div id="toast-container"></div>
+
+  <div class="page-content">
+
+    <!-- Welcome Hero -->
+    <div class="welcome-hero fade-in" id="welcome-hero">
+      <div>
+        <div class="greeting" id="greeting">Good Morning 👋</div>
+        <h1 id="user-name">Loading...</h1>
+        <div class="meta-pills" id="meta-pills"></div>
+      </div>
+      <div style="text-align:right">
+        <div class="avatar-big" id="avatar-big">--</div>
+        <div style="opacity:.75;font-size:13px;margin-top:4px" id="user-state"></div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid-4 mb-24 fade-in" id="stats-grid"></div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions fade-in" id="quick-actions">
+      <button class="qa-btn" style="background:var(--saffron)" onclick="location.href='review.html'">
+        <span class="qa-icon">⭐</span> Rate a Meal
+      </button>
+      <button class="qa-btn" style="background:#5C6BC0" onclick="location.href='menu.html'">
+        <span class="qa-icon">📅</span> Today's Menu
+      </button>
+      <button class="qa-btn" style="background:var(--south)" onclick="location.href='my-reviews.html'">
+        <span class="qa-icon">📝</span> My Reviews
+      </button>
+      <button class="qa-btn" style="background:var(--turmeric)" onclick="location.href='analytics.html'">
+        <span class="qa-icon">📊</span> Analytics
+      </button>
+    </div>
+
+    <!-- Two-col -->
+    <div class="grid-2 mb-24">
+
+      <!-- Today's Menu Snapshot -->
+      <div class="card fade-in delay-1">
+        <div class="flex-between mb-16">
+          <h3>📅 Today's Menu</h3>
+          <button class="btn btn-sm btn-secondary" onclick="location.href='menu.html'">View All</button>
+        </div>
+        <div id="menu-snap"></div>
+      </div>
+
+      <!-- North vs South Chart -->
+      <div class="card fade-in delay-2">
+        <h3 class="mb-4">🗺️ North vs South Today</h3>
+        <p class="mb-16" style="font-size:13px">Average meal ratings by region</p>
+        <div id="ns-bars"></div>
+        <div class="chart-legend mt-8">
+          <span><span class="legend-dot north"></span>North</span>
+          <span><span class="legend-dot south"></span>South</span>
+        </div>
+        <button class="btn btn-secondary btn-full btn-sm" style="margin-top:14px" onclick="location.href='analytics.html'">Full Analytics →</button>
+      </div>
+
+    </div>
+
+    <!-- My Recent Reviews -->
+    <div class="card fade-in delay-3">
+      <div class="flex-between mb-16">
+        <h3>📝 My Recent Reviews</h3>
+        <button class="btn btn-sm btn-secondary" onclick="location.href='my-reviews.html'">View All</button>
+      </div>
+      <div id="recent-reviews"></div>
+    </div>
+
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

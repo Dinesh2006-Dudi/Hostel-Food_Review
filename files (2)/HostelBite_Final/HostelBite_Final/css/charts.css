@@ -1,0 +1,114 @@
+/* ============================================================
+   HostelBite — Charts & Analytics CSS
+   File: css/charts.css
+   ============================================================ */
+
+/* ── Chart wrapper ─────────────────────────────────────────── */
+.chart-wrap { position: relative; width: 100%; }
+.chart-title { font-family: var(--font-head); font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.chart-subtitle { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+
+/* ── Bar Chart (Pure CSS) ────────────────────────────────────── */
+.bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 200px; padding: 0 4px; }
+.bar-group  { display: flex; align-items: flex-end; gap: 4px; flex: 1; flex-direction: column; justify-content: flex-end; }
+.bar-group-label { font-size: 11px; color: var(--muted); text-align: center; margin-top: 6px; }
+.bar-item { width: 100%; border-radius: 5px 5px 0 0; position: relative; transition: opacity 0.2s; min-width: 20px; }
+.bar-item:hover { opacity: 0.85; }
+.bar-item::after {
+  content: attr(data-val);
+  position: absolute; top: -22px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; font-weight: 700; color: var(--text); white-space: nowrap;
+}
+.bar-item.north { background: var(--north); }
+.bar-item.south { background: var(--south); }
+.bar-chart-outer { overflow-x: auto; }
+.bar-chart-grid {
+  display: flex; flex-direction: column; gap: 4px;
+  border-left: 2px solid var(--border); padding-left: 8px; margin-bottom: 8px;
+}
+.bar-chart-row { display: flex; align-items: center; gap: 10px; }
+.bar-chart-row-label { width: 80px; font-size: 12px; color: var(--muted); flex-shrink: 0; text-align: right; }
+.bar-chart-bars { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.bar-horizontal {
+  height: 22px; border-radius: 0 5px 5px 0;
+  position: relative; transition: width 0.6s ease; display: flex; align-items: center;
+}
+.bar-horizontal::after {
+  content: attr(data-val) ' ⭐';
+  position: absolute; right: -48px;
+  font-size: 12px; font-weight: 700; color: var(--text); white-space: nowrap;
+}
+.bar-horizontal.north { background: linear-gradient(90deg, #C62828, #EF5350); }
+.bar-horizontal.south { background: linear-gradient(90deg, #2E7D32, #4CAF50); }
+
+/* ── Line Chart (Canvas-based via JS) ───────────────────────── */
+.line-chart-canvas { width: 100%; height: 220px; display: block; }
+
+/* ── Donut Chart ─────────────────────────────────────────────── */
+.donut-wrap { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.donut-canvas { flex-shrink: 0; }
+.donut-legend { flex: 1; min-width: 160px; }
+.donut-legend-item {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+}
+.donut-legend-dot { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; }
+.donut-legend-label { font-size: 13px; color: var(--text); flex: 1; }
+.donut-legend-val   { font-size: 13px; font-weight: 700; }
+
+/* ── Radar-like comparison bars ─────────────────────────────── */
+.criteria-row { margin-bottom: 16px; }
+.criteria-label {
+  display: flex; justify-content: space-between;
+  font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 5px;
+}
+.criteria-bar-row { margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.criteria-region  { font-size: 11px; width: 14px; text-align: center; }
+.criteria-track   { flex: 1; height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+.criteria-fill    { height: 100%; border-radius: 5px; transition: width 0.7s ease; }
+.criteria-fill.north { background: linear-gradient(90deg, #C62828, #EF5350); }
+.criteria-fill.south { background: linear-gradient(90deg, #2E7D32, #4CAF50); }
+.criteria-score   { font-size: 12px; font-weight: 700; width: 28px; }
+
+/* ── Legend ─────────────────────────────────────────────────── */
+.chart-legend { display: flex; gap: 20px; justify-content: center; margin-top: 10px; font-size: 13px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; margin-right: 5px; }
+.legend-dot.north { background: var(--north); }
+.legend-dot.south { background: var(--south); }
+
+/* ── Insight Cards ───────────────────────────────────────────── */
+.insight-card {
+  padding: 16px 18px; border-radius: var(--radius); border: 1px solid;
+}
+.insight-card.north { background: var(--north-lt); border-color: rgba(198,40,40,0.2); }
+.insight-card.south { background: var(--south-lt); border-color: rgba(46,125,50,0.2); }
+.insight-card.both  { background: #EDE7F6; border-color: rgba(92,107,192,0.3); }
+.insight-card .insight-icon { font-size: 28px; margin-bottom: 6px; }
+.insight-card .insight-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.insight-card.north .insight-title { color: var(--north); }
+.insight-card.south .insight-title { color: var(--south); }
+.insight-card.both  .insight-title { color: #5C6BC0; }
+.insight-card p     { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+/* ── Tag Cloud ───────────────────────────────────────────────── */
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+.cloud-tag { padding: 7px 15px; border-radius: 20px; font-weight: 600; border: 1px solid; }
+.cloud-tag.north { background: var(--north-lt); color: var(--north); border-color: rgba(198,40,40,0.3); }
+.cloud-tag.south { background: var(--south-lt); color: var(--south); border-color: rgba(46,125,50,0.3); }
+.cloud-tag.size-1 { font-size: 11px; }
+.cloud-tag.size-2 { font-size: 13px; }
+.cloud-tag.size-3 { font-size: 15px; }
+.cloud-tag.size-4 { font-size: 17px; }
+.cloud-tag.size-5 { font-size: 19px; }
+
+/* ── Hero Comparison Cards ───────────────────────────────────── */
+.region-hero {
+  border-radius: var(--radius-lg); padding: 28px 24px;
+  color: #fff; text-align: center;
+}
+.region-hero.north { background: linear-gradient(135deg, #C62828, #E53935); box-shadow: 0 8px 28px rgba(198,40,40,0.35); }
+.region-hero.south { background: linear-gradient(135deg, #2E7D32, #43A047); box-shadow: 0 8px 28px rgba(46,125,50,0.35); }
+.region-hero .hero-flag  { font-size: 44px; margin-bottom: 8px; }
+.region-hero .hero-name  { font-family: var(--font-head); font-size: 22px; font-weight: 900; }
+.region-hero .hero-score { font-family: var(--font-head); font-size: 54px; font-weight: 900; margin: 6px 0; }
+.region-hero .hero-count { opacity: 0.82; font-size: 14px; }
+.region-hero .hero-top   { background: rgba(255,255,255,0.18); border-radius: 10px; padding: 10px 14px; margin-top: 14px; font-size: 13px; }

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Menu Management — HostelBite Admin</title>
+  <link rel="stylesheet" href="css/global.css"/>
+  <style>
+    .meal-tabs { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:22px; }
+    .meal-tab  { padding:10px 20px; border-radius:30px; border:2px solid var(--border); background:#fff; color:var(--muted); font-weight:600; font-size:14px; cursor:pointer; font-family:var(--font-body); transition:all .2s; }
+    .meal-tab.active { border-color:var(--saffron); background:var(--saffron-lt); color:var(--saffron); }
+    .item-row { display:flex; justify-content:space-between; align-items:center; background:#FAFAFA; border-radius:10px; padding:12px 16px; margin-bottom:8px; border:1px solid var(--border); flex-wrap:wrap; gap:8px; }
+    .item-left { display:flex; gap:10px; align-items:center; }
+    .item-name { font-weight:600; font-size:15px; }
+    .item-right { display:flex; gap:8px; align-items:center; }
+    .region-pill { font-size:11px; font-weight:700; padding:2px 9px; border-radius:10px; }
+    .region-pill.north { background:var(--north-lt); color:var(--north); }
+    .region-pill.south { background:var(--south-lt); color:var(--south); }
+    .add-form { display:grid; grid-template-columns:2fr 1fr 1fr auto; gap:10px; align-items:flex-end; flex-wrap:wrap; }
+    .veg-radio { display:flex; gap:16px; align-items:center; padding:4px 0; }
+    .veg-radio label { display:flex; align-items:center; gap:6px; cursor:pointer; font-size:14px; font-weight:500; }
+    @media(max-width:600px){ .add-form { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar"></nav>
+  <div id="toast-container"></div>
+
+  <div class="page-content" style="max-width:900px">
+    <div class="flex-between mb-24 fade-in">
+      <div>
+        <h1>🗓️ Menu Management</h1>
+        <p id="menu-date" style="margin-top:4px"></p>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-secondary" onclick="location.href='admin-dashboard.html'">← Back</button>
+        <button class="btn btn-primary" id="save-btn" onclick="saveMenu()">💾 Save Menu</button>
+      </div>
+    </div>
+
+    <!-- Meal Tabs -->
+    <div class="meal-tabs fade-in" id="meal-tabs"></div>
+
+    <!-- Current Items -->
+    <div class="card mb-18 fade-in delay-1">
+      <div class="flex-between mb-16">
+        <div>
+          <h3 id="meal-heading">🌅 Breakfast Items</h3>
+          <p id="meal-time" style="font-size:13px;margin-top:3px"></p>
+        </div>
+        <span id="item-count" class="badge badge-saffron"></span>
+      </div>
+      <div id="items-list"></div>
+    </div>
+
+    <!-- Add Item Form -->
+    <div class="card fade-in delay-2">
+      <h3 class="mb-16" id="add-heading">➕ Add New Item to Breakfast</h3>
+      <div class="add-form mb-12">
+        <div>
+          <label class="form-label">Item Name <span class="required">*</span></label>
+          <input class="form-input" id="item-name" placeholder="e.g., Aloo Paratha" />
+        </div>
+        <div>
+          <label class="form-label">Calories (kcal)</label>
+          <input class="form-input" type="number" id="item-cal" placeholder="320" />
+        </div>
+        <div>
+          <label class="form-label">Region</label>
+          <select class="form-select" id="item-region">
+            <option value="both">Both</option>
+            <option value="North">North Only</option>
+            <option value="South">South Only</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="addItem()">➕ Add</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Type</label>
+        <div class="veg-radio">
+          <label><input type="radio" name="veg" value="veg" checked /> <span style="color:var(--south)">🥦 Vegetarian</span></label>
+          <label><input type="radio" name="veg" value="nonveg" />      <span style="color:var(--north)">🍗 Non-Vegetarian</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/admin-menu.js"></script>
+</body>
+</html>

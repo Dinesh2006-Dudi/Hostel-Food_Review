@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard — HostelBite</title>
+  <link rel="stylesheet" href="css/global.css"/>
+  <style>
+    .admin-hero { background:linear-gradient(135deg,#1A237E,#3949AB); border-radius:22px; padding:30px 36px; color:#fff; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; box-shadow:0 8px 28px rgba(26,35,126,0.28); }
+    .admin-hero h1 { color:#fff; font-size:clamp(24px,4vw,36px); }
+    .admin-hero p  { color:rgba(255,255,255,.8); margin-top:6px; font-size:15px; }
+    .qa-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:20px; }
+    .qa-btn  { border:none; border-radius:14px; padding:20px 14px; color:#fff; font-weight:600; font-size:14px; cursor:pointer; font-family:var(--font-body); display:flex; flex-direction:column; align-items:center; gap:6px; transition:transform .15s; box-shadow:0 4px 14px rgba(0,0,0,0.1); }
+    .qa-btn:hover { transform:translateY(-3px); }
+    .qa-btn .qi { font-size:26px; }
+    .student-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+    .student-row:last-child { border-bottom:none; }
+    .s-avatar { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0; }
+    .s-avatar.north { background:var(--north-lt); color:var(--north); }
+    .s-avatar.south { background:var(--south-lt); color:var(--south); }
+    .s-info { flex:1; }
+    .s-name  { font-weight:600; font-size:14px; }
+    .s-sub   { font-size:12px; color:var(--muted); margin-top:1px; }
+    .announce-row { display:flex; gap:10px; flex-wrap:wrap; }
+    .announce-row textarea { flex:1; min-width:200px; }
+    .sent-box { background:var(--south-lt); border:1px solid var(--south); border-radius:12px; padding:14px 18px; color:var(--south); font-weight:600; display:none; }
+    .sent-box.show { display:block; }
+    .bar-row2 { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+    .bar-track2 { flex:1; height:12px; background:var(--border); border-radius:6px; overflow:hidden; }
+    .bar-fill2  { height:100%; border-radius:6px; transition:width .6s ease; }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar"></nav>
+  <div id="toast-container"></div>
+
+  <div class="page-content">
+    <!-- Hero -->
+    <div class="admin-hero fade-in">
+      <div>
+        <p style="opacity:.75;font-size:14px;margin-bottom:4px">🔑 Administrator</p>
+        <h1>HostelBite Admin Panel</h1>
+        <p>Full control — menus, reviews, students & announcements</p>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:48px">🛠️</div>
+        <div style="opacity:.7;font-size:13px;margin-top:4px" id="admin-date"></div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid-4 mb-24 fade-in" id="admin-stats"></div>
+
+    <!-- Quick Actions -->
+    <div class="qa-grid mb-24 fade-in delay-1">
+      <button class="qa-btn" style="background:#E8580A" onclick="location.href='admin-menu.html'">
+        <span class="qi">🗓️</span>Manage Menu
+      </button>
+      <button class="qa-btn" style="background:#5C6BC0" onclick="location.href='admin-reviews.html'">
+        <span class="qi">📋</span>All Reviews
+      </button>
+      <button class="qa-btn" style="background:#2E7D32" onclick="location.href='analytics.html'">
+        <span class="qi">📊</span>Analytics
+      </button>
+      <button class="qa-btn" style="background:#F5A623" onclick="location.href='menu.html'">
+        <span class="qi">📅</span>View Menu
+      </button>
+    </div>
+
+    <div class="grid-2 mb-20">
+      <!-- Mini chart -->
+      <div class="card fade-in delay-1">
+        <h3 class="mb-4">📊 Ratings Overview</h3>
+        <p style="font-size:13px;margin-bottom:16px">Average by meal (North vs South)</p>
+        <div id="admin-bars"></div>
+        <div style="display:flex;gap:16px;font-size:12px;margin-top:6px">
+          <span><span style="display:inline-block;width:12px;height:6px;background:var(--north);border-radius:3px;margin-right:4px"></span>North</span>
+          <span><span style="display:inline-block;width:12px;height:6px;background:var(--south);border-radius:3px;margin-right:4px"></span>South</span>
+        </div>
+      </div>
+
+      <!-- Announcement -->
+      <div class="card fade-in delay-2">
+        <h3 class="mb-12">📢 Send Announcement</h3>
+        <div class="sent-box" id="sent-box">✅ Announcement sent to all students!</div>
+        <div class="announce-row">
+          <textarea class="form-textarea" id="announce-text" rows="3" maxlength="200" placeholder='e.g., "Special Sunday Biryani tonight at 8 PM! 🍛"'></textarea>
+          <button class="btn btn-primary" onclick="sendAnnouncement()">📤 Send</button>
+        </div>
+        <div class="form-hint" id="ann-count">0 / 200 characters</div>
+      </div>
+    </div>
+
+    <!-- Students Table -->
+    <div class="card fade-in delay-2">
+      <div class="flex-between mb-16">
+        <h3>👥 Registered Students</h3>
+        <span id="student-count" class="badge badge-saffron"></span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="data-table" id="students-table">
+          <thead>
+            <tr>
+              <th>Name</th><th>Student ID</th><th>Room</th><th>Course</th><th>Region</th><th>State</th>
+            </tr>
+          </thead>
+          <tbody id="students-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

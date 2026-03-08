@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Today's Menu — HostelBite</title>
+  <link rel="stylesheet" href="css/global.css" />
+  <style>
+    .meal-card { border-radius:18px; overflow:hidden; border:1px solid var(--border); box-shadow:var(--shadow); transition:transform .2s; }
+    .meal-card:hover { transform:translateY(-4px); }
+    .meal-header { padding:22px 24px; }
+    .meal-header .m-emoji { font-size:36px; margin-bottom:8px; }
+    .meal-header h3 { color:#fff; font-size:24px; margin-bottom:2px; }
+    .meal-header .meal-time { color:rgba(255,255,255,.8); font-size:13px; }
+    .meal-header .meal-meta { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+    .meal-meta-pill { background:rgba(255,255,255,.18); border-radius:20px; padding:3px 12px; font-size:12px; color:#fff; }
+    .meal-body { padding:18px 22px; background:#fff; }
+    .meal-item { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px dashed var(--border); }
+    .meal-item:last-of-type { border-bottom:none; }
+    .meal-item-left { display:flex; gap:10px; align-items:center; }
+    .meal-item-name { font-size:14px; font-weight:500; }
+    .meal-item-right { display:flex; gap:6px; align-items:center; }
+    .cal-pill { font-size:11px; background:#F5F5F5; padding:2px 8px; border-radius:10px; color:var(--muted); }
+    .region-pill { font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; }
+    .region-pill.north { background:var(--north-lt); color:var(--north); }
+    .region-pill.south { background:var(--south-lt); color:var(--south); }
+    .meal-legend { display:flex; gap:18px; padding:10px 0; border-top:1px solid var(--border); margin-top:4px; font-size:12px; color:var(--muted); }
+    .legend-veg { display:flex; align-items:center; gap:5px; }
+    .filter-bar { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
+    .filter-btn { padding:7px 16px; border-radius:24px; border:2px solid var(--border); background:#fff; color:var(--muted); font-weight:500; font-size:13px; cursor:pointer; transition:all .2s; font-family:var(--font-body); }
+    .filter-btn:hover, .filter-btn.active { border-color:var(--saffron); background:var(--saffron-lt); color:var(--saffron); }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar"></nav>
+  <div id="toast-container"></div>
+
+  <div class="page-content">
+    <!-- Header -->
+    <div class="flex-between mb-28 fade-in">
+      <div>
+        <h1>📅 Today's Menu</h1>
+        <p id="today-date" style="margin-top:6px"></p>
+      </div>
+      <button class="btn btn-primary" onclick="location.href='review.html'">⭐ Rate a Meal</button>
+    </div>
+
+    <!-- Legend pills -->
+    <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap" class="fade-in">
+      <span class="badge badge-north" style="padding:5px 14px">🟠 North Special</span>
+      <span class="badge badge-south" style="padding:5px 14px">🟢 South Special</span>
+      <span class="badge" style="padding:5px 14px;background:#F5F5F5;color:var(--muted);border:1px solid var(--border)">⚪ Common for All</span>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="filter-bar fade-in" id="filter-bar">
+      <button class="filter-btn active" data-meal="all" onclick="filterMeal(this,'all')">All Meals</button>
+      <button class="filter-btn" data-meal="Breakfast" onclick="filterMeal(this,'Breakfast')">🌅 Breakfast</button>
+      <button class="filter-btn" data-meal="Lunch"     onclick="filterMeal(this,'Lunch')">☀️ Lunch</button>
+      <button class="filter-btn" data-meal="Snacks"    onclick="filterMeal(this,'Snacks')">🌇 Snacks</button>
+      <button class="filter-btn" data-meal="Dinner"    onclick="filterMeal(this,'Dinner')">🌙 Dinner</button>
+    </div>
+
+    <!-- Meal Cards Grid -->
+    <div class="grid-2" id="menu-grid"></div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>

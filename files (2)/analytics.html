@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Analytics — HostelBite</title>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/charts.css"/>
+  <style>
+    .my-reviews-wrap { max-width:820px; margin:0 auto; padding:28px 20px; }
+    .filter-bar   { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+    .filter-btn   { padding:7px 16px; border-radius:24px; border:2px solid var(--border); background:#fff; color:var(--muted); font-size:13px; font-weight:500; cursor:pointer; font-family:var(--font-body); transition:all .2s; }
+    .filter-btn.active, .filter-btn:hover { border-color:var(--saffron); background:var(--saffron-lt); color:var(--saffron); }
+    .rev-card { padding:20px 24px; margin-bottom:14px; }
+    .rev-top  { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:8px; }
+    .rev-main { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .rev-meal  { font-family:var(--font-head); font-size:18px; font-weight:700; }
+    .rev-score { font-size:13px; font-weight:700; padding:2px 10px; border-radius:10px; }
+    .rev-comment { font-size:14px; color:var(--muted); line-height:1.6; margin-bottom:8px; background:#FAFAFA; padding:8px 12px; border-radius:8px; }
+    .sub-ratings { display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:6px; margin-bottom:8px; }
+    .sub-r { background:#FAFAFA; padding:5px 10px; border-radius:8px; font-size:12px; color:var(--muted); }
+    .sub-r strong { color:var(--text); }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar"></nav>
+  <div id="toast-container"></div>
+
+  <div class="page-content">
+    <!-- Header -->
+    <div class="flex-between mb-28 fade-in">
+      <div>
+        <h1>📊 Community Analytics</h1>
+        <p id="analytics-sub" style="margin-top:6px">North 🟠 vs South 🟢 — Live food satisfaction data</p>
+      </div>
+    </div>
+
+    <!-- Hero comparison -->
+    <div class="grid-2 mb-24 fade-in" id="region-heroes"></div>
+
+    <!-- Insight Cards -->
+    <div class="grid-4 mb-24 fade-in delay-1" id="insight-cards"></div>
+
+    <!-- Charts row 1 -->
+    <div class="grid-2 mb-20">
+      <!-- Grouped Horizontal Bars -->
+      <div class="card fade-in delay-1">
+        <div class="chart-title">🍽️ Meal Ratings: North vs South</div>
+        <div class="chart-subtitle">Average star rating by meal type</div>
+        <div id="meal-bars"></div>
+        <div class="chart-legend mt-8">
+          <span><span class="legend-dot north"></span>North India</span>
+          <span><span class="legend-dot south"></span>South India</span>
+        </div>
+      </div>
+
+      <!-- 7-day trend using canvas -->
+      <div class="card fade-in delay-2">
+        <div class="chart-title">📈 7-Day Satisfaction Trend</div>
+        <div class="chart-subtitle">Rolling average per region</div>
+        <canvas id="trend-canvas" class="line-chart-canvas"></canvas>
+        <div class="chart-legend mt-8">
+          <span><span class="legend-dot north"></span>North</span>
+          <span><span class="legend-dot south"></span>South</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts row 2 -->
+    <div class="grid-2 mb-20">
+      <!-- Donut -->
+      <div class="card fade-in delay-2">
+        <div class="chart-title">🥧 Satisfaction Breakdown</div>
+        <div class="chart-subtitle">Overall satisfaction split by region</div>
+        <div class="donut-wrap mt-8">
+          <canvas id="donut-canvas" width="160" height="160" class="donut-canvas"></canvas>
+          <div class="donut-legend" id="donut-legend"></div>
+        </div>
+      </div>
+
+      <!-- Criteria comparison -->
+      <div class="card fade-in delay-3">
+        <div class="chart-title">🕸️ Rating Criteria Comparison</div>
+        <div class="chart-subtitle">Taste · Quantity · Freshness · Presentation</div>
+        <div id="criteria-bars" style="margin-top:16px"></div>
+        <div class="chart-legend mt-8">
+          <span><span class="legend-dot north"></span>North</span>
+          <span><span class="legend-dot south"></span>South</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tag clouds -->
+    <div class="grid-2 mb-20">
+      <div class="card fade-in delay-1">
+        <div class="chart-title" style="color:var(--north)">🟠 Top Tags — North Students</div>
+        <div class="tag-cloud mt-8" id="north-tags"></div>
+      </div>
+      <div class="card fade-in delay-2">
+        <div class="chart-title" style="color:var(--south)">🟢 Top Tags — South Students</div>
+        <div class="tag-cloud mt-8" id="south-tags"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/analytics.js"></script>
+</body>
+</html>

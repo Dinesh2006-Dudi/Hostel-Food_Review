@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HostelBite — Your Hostel Food Review App</title>
+  <link rel="stylesheet" href="css/global.css" />
+  <style>
+    /* ── Landing-specific styles ── */
+    .landing-nav {
+      position: absolute; width: 100%; top: 0; left: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px; z-index: 10;
+    }
+    .landing-nav .brand {
+      font-family: var(--font-head); font-size: 26px; font-weight: 900; color: #fff;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .stats-bar {
+      background: var(--text); padding: 24px 40px;
+      display: flex; justify-content: center; gap: 60px; flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-item .num { font-family: var(--font-head); font-size: 30px; font-weight: 900; color: var(--turmeric); }
+    .stat-item .lbl { color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 2px; }
+    .features-section { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+    .feature-card { text-align: center; padding: 36px 28px; }
+    .feature-icon { font-size: 52px; margin-bottom: 16px; }
+    .feature-title { font-family: var(--font-head); font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+    .ns-section {
+      background: var(--text); padding: 60px 40px; text-align: center;
+    }
+    .ns-section h2 { color: #fff; font-family: var(--font-head); font-size: 32px; margin-bottom: 12px; }
+    .ns-section p  { color: rgba(255,255,255,0.7); font-size: 16px; max-width: 480px; margin: 0 auto 32px; }
+    .ns-cards { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+    .ns-card { border-radius: 16px; padding: 22px 36px; }
+    .ns-card.north { background: rgba(198,40,40,0.2); border: 1px solid var(--north); color: #EF9A9A; }
+    .ns-card.south { background: rgba(46,125,50,0.2); border: 1px solid var(--south); color: #A5D6A7; }
+    .ns-card .score { font-size: 34px; font-weight: 900; font-family: var(--font-head); }
+    .ns-card .lbl   { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+    .demo-box {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 12px; padding: 14px 24px; display: inline-block;
+      color: rgba(255,255,255,0.75); font-size: 13px; line-height: 1.9; margin-top: 24px;
+    }
+    footer { text-align: center; padding: 28px; color: var(--muted); font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <!-- LANDING NAV -->
+  <nav class="landing-nav">
+    <div class="brand">🍽️ HostelBite</div>
+    <div style="display:flex;gap:12px">
+      <a href="login.html" class="btn btn-secondary btn-sm" style="background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.4);color:#fff">Login</a>
+      <a href="register.html" class="btn btn-sm" style="background:#fff;color:var(--saffron);font-weight:700">Register Free</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content fade-in">
+      <div style="font-size:72px;margin-bottom:14px">🍛</div>
+      <h1>Your Voice,<br>Your Hostel Food</h1>
+      <p>Review every meal. Compare North &amp; South tastes. Help your hostel serve better food — together.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <a href="register.html" class="btn btn-lg" style="background:#fff;color:var(--saffron);box-shadow:0 8px 28px rgba(0,0,0,0.18)">Get Started 🚀</a>
+        <a href="login.html"   class="btn btn-lg" style="background:rgba(255,255,255,0.15);color:#fff;border:2px solid rgba(255,255,255,0.45)">Login to Dashboard</a>
+      </div>
+      <div class="demo-box">
+        <strong>Demo accounts:</strong><br>
+        🟠 North: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bddccfd7c8d3fdd5d2cec9d8d193d4d3">[email&#160;protected]</a> / pass123 &nbsp;|&nbsp;
+        🟢 South: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="eb808a9d928aab8384989f8e87c58285">[email&#160;protected]</a> / pass123 &nbsp;|&nbsp;
+        🔑 Admin: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="99f8fdf4f0f7d9f1f6eaedfcf5b7f0f7">[email&#160;protected]</a> / admin123
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-item"><div class="num">1,240+</div><div class="lbl">Reviews Submitted</div></div>
+    <div class="stat-item"><div class="num">320</div><div class="lbl">Students Registered</div></div>
+    <div class="stat-item"><div class="num">4</div><div class="lbl">Meal Types Daily</div></div>
+    <div class="stat-item"><div class="num">2</div><div class="lbl">Regions Tracked</div></div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="features-section">
+    <h2 style="text-align:center;margin-bottom:48px" class="fade-in">Everything You Need 🌟</h2>
+    <div class="grid-4">
+      <div class="card card-hover feature-card fade-in delay-1">
+        <div class="feature-icon">🗓️</div>
+        <div class="feature-title">Daily Menu</div>
+        <p>See today's Breakfast, Lunch, Snacks &amp; Dinner at a glance — with calories &amp; region tags.</p>
+      </div>
+      <div class="card card-hover feature-card fade-in delay-2">
+        <div class="feature-icon">⭐</div>
+        <div class="feature-title">Rate &amp; Review</div>
+        <p>Give detailed feedback on Taste, Quantity, Freshness &amp; Presentation for each meal.</p>
+      </div>
+      <div class="card card-hover feature-card fade-in delay-3">
+        <div class="feature-icon">🗺️</div>
+        <div class="feature-title">North vs South</div>
+        <p>Unique analytics comparing food satisfaction across regions — the first of its kind!</p>
+      </div>
+      <div class="card card-hover feature-card fade-in delay-4">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Live Analytics</div>
+        <p>Real-time charts and insights for the entire hostel community with trend analysis.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NORTH vs SOUTH TEASER -->
+  <section class="ns-section">
+    <h2>North 🟠 vs South 🟢</h2>
+    <p>The first hostel food app that shows how different regions experience the same meal differently.</p>
+    <div class="ns-cards">
+      <div class="ns-card north">
+        <div class="score">4.2 ⭐</div>
+        <div class="lbl">North students — Breakfast avg</div>
+      </div>
+      <div class="ns-card south">
+        <div class="score">4.5 ⭐</div>
+        <div class="lbl">South students — Lunch avg</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section style="padding:70px 40px;max-width:900px;margin:0 auto;text-align:center">
+    <h2 class="fade-in" style="margin-bottom:40px">How It Works</h2>
+    <div class="grid-3">
+      <div class="fade-in delay-1" style="padding:20px">
+        <div style="font-size:48px;margin-bottom:12px">1️⃣</div>
+        <h4>Register with Region</h4>
+        <p style="margin-top:8px">Create your account and tell us if you're from North or South India.</p>
+      </div>
+      <div class="fade-in delay-2" style="padding:20px">
+        <div style="font-size:48px;margin-bottom:12px">2️⃣</div>
+        <h4>Check Today's Menu</h4>
+        <p style="margin-top:8px">View all 4 meal slots for the day with items, calories &amp; special regional dishes.</p>
+      </div>
+      <div class="fade-in delay-3" style="padding:20px">
+        <div style="font-size:48px;margin-bottom:12px">3️⃣</div>
+        <h4>Rate &amp; Compare</h4>
+        <p style="margin-top:8px">Submit your review and see how North vs South students rate the same food!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background:linear-gradient(135deg,var(--saffron),var(--turmeric));padding:60px 20px;text-align:center">
+    <h2 style="color:#fff;margin-bottom:12px">Ready to Make Your Hostel Food Better?</h2>
+    <p style="color:rgba(255,255,255,0.9);font-size:17px;margin-bottom:28px">Join hundreds of students already giving feedback.</p>
+    <a href="register.html" class="btn btn-lg" style="background:#fff;color:var(--saffron)">Register Now — It'

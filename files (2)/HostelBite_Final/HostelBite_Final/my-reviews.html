@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Reviews — HostelBite</title>
+  <link rel="stylesheet" href="css/global.css"/>
+  <style>
+    .filter-bar { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+    .filter-btn { padding:7px 16px; border-radius:24px; border:2px solid var(--border); background:#fff; color:var(--muted); font-size:13px; font-weight:500; cursor:pointer; font-family:var(--font-body); transition:all .2s; }
+    .filter-btn.active, .filter-btn:hover { border-color:var(--saffron); background:var(--saffron-lt); color:var(--saffron); }
+    .rev-card { padding:20px 24px; margin-bottom:14px; }
+    .rev-top  { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:8px; }
+    .rev-main { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .rev-meal  { font-family:var(--font-head); font-size:18px; font-weight:700; }
+    .rev-comment { font-size:14px; color:var(--muted); line-height:1.6; margin-bottom:8px; background:#FAFAFA; padding:8px 12px; border-radius:8px; }
+    .sub-ratings { display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:6px; margin-bottom:8px; }
+    .sub-r { background:#FAFAFA; padding:5px 10px; border-radius:8px; font-size:12px; color:var(--muted); }
+    .sub-r strong { color:var(--text); }
+    .empty-state { text-align:center; padding:52px 20px; }
+    .empty-state .es-icon { font-size:60px; margin-bottom:14px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar"></nav>
+  <div id="toast-container"></div>
+
+  <div class="page-content" style="max-width:840px">
+    <!-- Header -->
+    <div class="flex-between mb-24 fade-in">
+      <div>
+        <h1>📝 My Reviews</h1>
+        <p id="rev-count" style="margin-top:4px"></p>
+      </div>
+      <button class="btn btn-primary" onclick="location.href='review.html'">+ New Review</button>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="filter-bar fade-in" id="filter-bar">
+      <button class="filter-btn active" onclick="filterReviews(this,'all')">All Meals</button>
+      <button class="filter-btn" onclick="filterReviews(this,'Breakfast')">🌅 Breakfast</button>
+      <button class="filter-btn" onclick="filterReviews(this,'Lunch')">☀️ Lunch</button>
+      <button class="filter-btn" onclick="filterReviews(this,'Snacks')">🌇 Snacks</button>
+      <button class="filter-btn" onclick="filterReviews(this,'Dinner')">🌙 Dinner</button>
+    </div>
+
+    <!-- Reviews list -->
+    <div id="reviews-list"></div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    if (!HostelBite.requireLogin()) { /* stops */ }
+
+    const user = HostelBite.currentUser;
+    const MEAL_EMOJI = { Breakfast:'🌅', Lunch:'☀️', Snacks:'🌇', Dinner:'🌙' };
+
+    renderNavbar([
+      { label:'← Dashboard', href:'dashboard.html' },
+      { label:'Rate a Meal',  href:'review.html' },
+    ]);
+
+    let currentFilter = 'all';
+
+    function renderReviews(filter = 'all') {
+      currentFilter = filter;
+      const myReviews = HostelBite.getMyReviews()
+        .filter(r => filter === 'all' || r.meal === filter)
+        .slice().reverse();
+
+      const allMy = HostelBite.getMyReviews();
+      const avg   = allMy.length ? (allMy.reduce((s,r)=>s+r.overall,0)/allMy.length).toFixed(1) : '—';
+      document.getElementById('rev-count').textContent =
+        `${myReviews.length} review${myReviews.length !== 1 ? 's' : ''} · Overall avg: ${avg}⭐`;
+
+      const listEl = document.getElementById('reviews-list');
+      if (myReviews.length === 0) {
+        listEl.innerHTML = `
+          <div class="card empty-state">
+            <div class="es-icon">🍽️</div>
+            <h3>No reviews yet</h3>
+            <p style="margin-top:8px">${filter === 'all' ? 'Start rating meals to see them here!' : `No ${filter} reviews found.`}</p>
+            <button class="btn btn-primary" style="margin-top:18px" onclick="location.href='review.html'">Rate a Meal →</button>
+          </div>`;
+        return;
+      }
+
+      listEl.innerHTML = myReviews.map((r, idx) => {
+        const color = r.overall >= 4 ? '#2E7D32' : r.overall >= 3 ? '#F57F17' : '#C62828';
+        return `
+          <div class="card rev-card slide-in delay-${(idx%4)+1}">
+            <div class="rev-top">
+              <div class="rev-main">
+                <span style="font-size:24px">${r.emoji}</span>
+                <span class="rev-meal">${MEAL_EMOJI[r.meal]||''} ${r.meal}</span>
+                <span class="badge" style="background:${color}22;color:${color};border:1px solid ${color}44">${r.overall}⭐</span>
+                <span style="font-size:12px;color:var(--muted)">${r.date}</span>
+              </div>
+              ${regionBadge(r.region)}
+            </div>
+            ${r.comment ? `<div class="rev-comment">"${r.comment}"</div>` : ''}
+            <div class="sub-ratings">
+              ${Object.entries(r.ratings).map(([k,v])=>`
+                <div class="sub-r"><span style="text-transform:capitalize">${k}</span><br><strong>${'⭐'.repeat(v)}</strong></div>
+              `).join('')}
+            </div>
+            ${r.tags?.length ? `<div class="tags-row">${r.tags.map(t=>`<span class="tag" style="font-size:12px;padding:3px 10px">${t}</span>`).join('')}</div>` : ''}
+          </div>`;
+      }).join('');
+    }
+
+    window.filterReviews = function(btn, filter) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderReviews(filter);
+    };
+
+    renderReviews();
+  </script>
+</body>
+</html>

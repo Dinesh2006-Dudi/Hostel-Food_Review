@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — HostelBite</title>
+  <link rel="stylesheet" href="css/global.css" />
+  <style>
+    body { display:flex; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg,#FFF8F0,#FFE0CC); }
+    .auth-card { width:100%; max-width:440px; padding:44px; }
+    .auth-header { text-align:center; margin-bottom:32px; }
+    .auth-header .auth-icon { font-size:52px; margin-bottom:10px; }
+    .auth-header h1 { margin-bottom:6px; }
+    .auth-header p { color:var(--muted); font-size:14px; }
+    .error-box { background:var(--north-lt); border:1px solid var(--north); border-radius:10px; padding:10px 14px; font-size:13px; color:var(--north); margin-bottom:16px; display:none; }
+    .error-box.show { display:block; }
+    .demo-hint { background:#FFF8E1; border-radius:10px; padding:14px; margin-top:18px; font-size:12px; color:var(--muted); line-height:1.9; }
+    .demo-hint strong { color:var(--text); }
+    .auth-footer { text-align:center; margin-top:18px; font-size:14px; color:var(--muted); }
+    .auth-footer a { color:var(--saffron); font-weight:700; text-decoration:none; }
+    .spinner { display:inline-block; width:16px; height:16px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite; vertical-align:middle; margin-right:6px; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <div class="card card-lg auth-card fade-in">
+    <!-- Header -->
+    <div class="auth-header">
+      <div class="auth-icon">🍽️</div>
+      <h1>Welcome Back</h1>
+      <p>Login to your HostelBite account</p>
+    </div>
+
+    <!-- Error -->
+    <div class="error-box" id="error-box">❌ Invalid email or password. Please try again.</div>
+
+    <!-- Form -->
+    <form id="login-form" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="email">Email Address</label>
+        <input class="form-input" type="email" id="email" placeholder="arjun@hostel.in" required autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-input" type="password" id="password" placeholder="••••••••" required autocomplete="current-password" />
+      </div>
+      <button type="submit" class="btn btn-primary btn-full" id="login-btn" style="margin-top:4px">
+        Login →
+      </button>
+    </form>
+
+    <!-- Demo hint -->
+    <div class="demo-hint">
+      <strong>🔐 Demo Accounts:</strong><br>
+      🟠 North: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f8998a928d96b890978b8c9d94d69196">[email&#160;protected]</a> / pass123<br>
+      🟢 South: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="751e14030c14351d1a060110195b1c1b">[email&#160;protected]</a> / pass123<br>
+      🔑 Admin: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5b3a3f3632351b3334282f3e37753235">[email&#160;protected]</a> / admin123
+    </div>
+
+    <div class="auth-footer">

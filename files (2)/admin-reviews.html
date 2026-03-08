@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Reviews — HostelBite Admin</title>
+  <link rel="stylesheet" href="css/global.css"/>
+  <style>
+    .filter-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; }
+    .rev-card { padding:18px 22px; margin-bottom:12px; }
+    .rev-top  { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:8px; }
+    .rev-left { display:flex; gap:12px; align-items:flex-start; flex:1; }
+    .s-avatar { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0; }
+    .s-avatar.north { background:var(--north-lt); color:var(--north); }
+    .s-avatar.south { background:var(--south-lt); color:var(--south); }
+    .rev-meta  { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:5px; }
+    .rev-name  { font-weight:700; font-size:15px; }
+    .rev-meal  { font-size:14px; color:var(--muted); }
+    .rev-comment { background:#FAFAFA; border-radius:8px; padding:8px 12px; font-size:14px; color:var(--text); line-height:1.6; margin-bottom:8px; }
+    .sub-mini  { display:flex; gap:8px; flex-wrap:wrap; }
+    .sub-m     { font-size:12px; background:#F5F5F5; padding:3px 10px; border-radius:8px; color:var(--muted); }
+    .sub-m strong { color:var(--text); }
+    .empty-state { text-align:center; padding:52px 20px; }
+    .empty-state .es-icon { font-size:52px; margin-bottom:12px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar"></nav>
+  <div id="toast-container"></div>
+
+  <div class="page-content">
+    <div class="flex-between mb-24 fade-in">
+      <div>
+        <h1>📋 All Reviews</h1>
+        <p id="rev-count" style="margin-top:4px"></p>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-secondary" onclick="location.href='admin-dashboard.html'">← Back</button>
+        <button class="btn btn-success" onclick="doExport()">📤 Export CSV</button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-20 fade-in">
+      <div class="filter-grid">
+        <div>
+          <label class="form-label">Search</label>
+          <input class="form-input" id="search" placeholder="Student name or comment..." oninput="applyFilters()" />
+        </div>
+        <div>
+          <label class="form-label">Region</label>
+          <select class="form-select" id="f-region" onchange="applyFilters()">
+            <option value="all">All Regions</option>
+            <option value="North">🟠 North</option>
+            <option value="South">🟢 South</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Meal Type</label>
+          <select class="form-select" id="f-meal" onchange="applyFilters()">
+            <option value="all">All Meals</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Snacks">Snacks</option>
+            <option value="Dinner">Dinner</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Rating</label>
+          <select class="form-select" id="f-rating" onchange="applyFilters()">
+            <option value="all">All Ratings</option>
+            <option value="high">⭐⭐⭐⭐+ High (4+)</option>
+            <option value="mid">⭐⭐⭐ Medium (3–4)</option>
+            <option value="low">⭐⭐ Low (&lt;3)</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:flex-end">
+          <button class="btn btn-secondary btn-full" onclick="clearFilters()">Clear Filters</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews -->
+    <div id="reviews-list"></div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/admin-reviews.js"></script>
+</body>
+</html>
